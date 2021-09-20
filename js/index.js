@@ -38,6 +38,7 @@ var nuko = {
   swapGasMax: 300,
   swapLog: [],
   swapMaxLog: 100,
+  swapLossRate: 0.0045, // Liquidity Provider Fee (=0.3%) + Price Impact (~0.15%)
   upperThreshold: 117.9,
   lowerThreshold: 115.9,
   staticUpperThreshold: 119,
@@ -546,6 +547,8 @@ const updateLimit = () => {
     nuko.upperThreshold = nuko.target + nuko.spread / 2;
     nuko.lowerThreshold = nuko.target - nuko.spread / 2;
   }
+  nuko.upperThreshold /= (1.0 - nuko.swapLossRate);
+  nuko.lowerThreshold *= (1.0 - nuko.swapLossRate);
   $("#upperLimit").text(nuko.upperThreshold.toFixed(2));
   $("#lowerLimit").text(nuko.lowerThreshold.toFixed(2));
 };
@@ -931,14 +934,14 @@ const initialize = () => {
   $(document).on("input", "#lowerThreshold", function () {
     nuko.staticLowerThreshold = parseFloat($(this).val());
     localStorage.staticLowerThreshold = nuko.staticLowerThreshold;
-    $("#lowerPrice").text(nuko.staticLowerThreshold.toFixed(2));
+    $("#lowerPrice").text(`${nuko.staticLowerThreshold.toFixed(2)} (-${(nuko.swapLossRate*100.0).toFixed(2)})%`);
     updateLimit();
   });
 
   $(document).on("input", "#upperThreshold", function () {
     nuko.staticUpperThreshold = parseFloat($(this).val());
     localStorage.staticUpperThreshold = nuko.staticUpperThreshold;
-    $("#upperPrice").text(nuko.staticUpperThreshold.toFixed(2));
+    $("#upperPrice").text(`${nuko.staticUpperThreshold.toFixed(2)} (+${(nuko.swapLossRate*100.0).toFixed(2)})%`);
     updateLimit();
   });
 
@@ -1038,11 +1041,11 @@ const initialize = () => {
 
   nuko.staticLowerThreshold = parseFloat(localStorage.staticLowerThreshold ? localStorage.staticLowerThreshold : 114);
   $("#lowerThreshold").val(nuko.staticLowerThreshold);
-  $("#lowerPrice").text(nuko.staticLowerThreshold.toFixed(2));
+  $("#lowerPrice").text(`${nuko.staticLowerThreshold.toFixed(2)} (-${(nuko.swapLossRate*100.0).toFixed(2)})%`);
 
   nuko.staticUpperThreshold = parseFloat(localStorage.staticUpperThreshold ? localStorage.staticUpperThreshold : 119);
   $("#upperThreshold").val(nuko.staticUpperThreshold);
-  $("#upperPrice").text(nuko.staticUpperThreshold.toFixed(2));
+  $("#upperPrice").text(`${nuko.staticUpperThreshold.toFixed(2)} (+${(nuko.swapLossRate*100.0).toFixed(2)})%`);
 
   /**
    * minimum amount of swaping
