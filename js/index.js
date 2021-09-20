@@ -934,14 +934,14 @@ const initialize = () => {
   $(document).on("input", "#lowerThreshold", function () {
     nuko.staticLowerThreshold = parseFloat($(this).val());
     localStorage.staticLowerThreshold = nuko.staticLowerThreshold;
-    $("#lowerPrice").text(`${nuko.staticLowerThreshold.toFixed(2)} (-${(nuko.swapLossRate*100.0).toFixed(2)})%`);
+    $("#lowerPrice").text(`${nuko.staticLowerThreshold.toFixed(2)} (-${(nuko.swapLossRate*100.0).toFixed(2)}%)`);
     updateLimit();
   });
 
   $(document).on("input", "#upperThreshold", function () {
     nuko.staticUpperThreshold = parseFloat($(this).val());
     localStorage.staticUpperThreshold = nuko.staticUpperThreshold;
-    $("#upperPrice").text(`${nuko.staticUpperThreshold.toFixed(2)} (+${(nuko.swapLossRate*100.0).toFixed(2)})%`);
+    $("#upperPrice").text(`${nuko.staticUpperThreshold.toFixed(2)} (+${(nuko.swapLossRate*100.0).toFixed(2)}%)`);
     updateLimit();
   });
 
@@ -1041,11 +1041,11 @@ const initialize = () => {
 
   nuko.staticLowerThreshold = parseFloat(localStorage.staticLowerThreshold ? localStorage.staticLowerThreshold : 114);
   $("#lowerThreshold").val(nuko.staticLowerThreshold);
-  $("#lowerPrice").text(`${nuko.staticLowerThreshold.toFixed(2)} (-${(nuko.swapLossRate*100.0).toFixed(2)})%`);
+  $("#lowerPrice").text(`${nuko.staticLowerThreshold.toFixed(2)} (-${(nuko.swapLossRate*100.0).toFixed(2)}%)`);
 
   nuko.staticUpperThreshold = parseFloat(localStorage.staticUpperThreshold ? localStorage.staticUpperThreshold : 119);
   $("#upperThreshold").val(nuko.staticUpperThreshold);
-  $("#upperPrice").text(`${nuko.staticUpperThreshold.toFixed(2)} (+${(nuko.swapLossRate*100.0).toFixed(2)})%`);
+  $("#upperPrice").text(`${nuko.staticUpperThreshold.toFixed(2)} (+${(nuko.swapLossRate*100.0).toFixed(2)}%)`);
 
   /**
    * minimum amount of swaping
