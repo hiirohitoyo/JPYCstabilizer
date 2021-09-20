@@ -40,6 +40,9 @@ var nuko = {
   swapMaxLog: 100,
   upperThreshold: 117.9,
   lowerThreshold: 115.9,
+  staticUpperThreshold: 119,
+  staticLowerThreshold: 114,
+  useStaticThreshold: true,
   target: 0,
   spread: 2,
   jpyusd: 100,
@@ -496,8 +499,7 @@ const getJPYUSD = async () => {
   let targetRate = 116.7 + Math.random() * 0.1;
   // (1 + deviateTorelance * (nuko.theDayOfNukoRateDeviate - 1)) * jpyusd;
   nuko.target = targetRate;
-  nuko.upperThreshold = targetRate + nuko.spread / 2;
-  nuko.lowerThreshold = targetRate - nuko.spread / 2;
+  updateLimit();
 
   return jpyusd;
 };
@@ -537,8 +539,13 @@ const approveCoin = async (tokenContractAddress, spenderAddress, id) => {
 };
 
 const updateLimit = () => {
-  nuko.upperThreshold = nuko.target + nuko.spread / 2;
-  nuko.lowerThreshold = nuko.target - nuko.spread / 2;
+  if(nuko.useStaticThreshold) {
+    nuko.upperThreshold = nuko.staticUpperThreshold;
+    nuko.lowerThreshold = nuko.staticLowerThreshold;
+  } else {
+    nuko.upperThreshold = nuko.target + nuko.spread / 2;
+    nuko.lowerThreshold = nuko.target - nuko.spread / 2;
+  }
   $("#upperLimit").text(nuko.upperThreshold.toFixed(2));
   $("#lowerLimit").text(nuko.lowerThreshold.toFixed(2));
 };
@@ -921,6 +928,20 @@ const initialize = () => {
     updateLimit();
   });
 
+  $(document).on("input", "#lowerThreshold", function () {
+    nuko.staticLowerThreshold = parseFloat($(this).val());
+    localStorage.staticLowerThreshold = nuko.staticLowerThreshold;
+    $("#lowerPrice").text(nuko.staticLowerThreshold.toFixed(2));
+    updateLimit();
+  });
+
+  $(document).on("input", "#upperThreshold", function () {
+    nuko.staticUpperThreshold = parseFloat($(this).val());
+    localStorage.staticUpperThreshold = nuko.staticUpperThreshold;
+    $("#upperPrice").text(nuko.staticUpperThreshold.toFixed(2));
+    updateLimit();
+  });
+
   $("#createNewWallet").on("click", () => {
     web3.eth.accounts.wallet.clear();
     nuko.wallet = web3.eth.accounts.wallet.create(1);
@@ -1014,6 +1035,14 @@ const initialize = () => {
   nuko.spread = parseFloat(localStorage.spread ? localStorage.spread : 2);
   $("#spreadWidth").val(nuko.spread);
   $("#spread").text(nuko.spread.toFixed(1));
+
+  nuko.staticLowerThreshold = parseFloat(localStorage.staticLowerThreshold ? localStorage.staticLowerThreshold : 114);
+  $("#lowerThreshold").val(nuko.staticLowerThreshold);
+  $("#lowerPrice").text(nuko.staticLowerThreshold.toFixed(2));
+
+  nuko.staticUpperThreshold = parseFloat(localStorage.staticUpperThreshold ? localStorage.staticUpperThreshold : 119);
+  $("#upperThreshold").val(nuko.staticUpperThreshold);
+  $("#upperPrice").text(nuko.staticUpperThreshold.toFixed(2));
 
   /**
    * minimum amount of swaping

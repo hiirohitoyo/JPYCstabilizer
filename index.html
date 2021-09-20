@@ -914,7 +914,15 @@
                   <div class="row mb-4">
                     <div class="col"><input type="range" class="form-control-range" id="spreadWidth" min="2" max="10" step="0.1" value="2"></div>
                   </div>
-                  
+                  <label for="lowerThreshold">Triger lower price: 1 USDC = <span id="lowerPrice">114</span> JPYC</label>
+                  <div class="row mb-4">
+                    <div class="col"><input type="range" class="form-control-range" id="lowerThreshold" min="110" max="130" step="0.01" value="114"></div>
+                  </div>
+                  <label for="upperThreshold">Triger upper price: 1 USDC = <span id="upperPrice">119</span> JPYC</label>
+                  <div class="row mb-4">
+                    <div class="col"><input type="range" class="form-control-range" id="upperThreshold" min="110" max="130" step="0.01" value="119"></div>
+                  </div>
+                
                   <label for="spreadWidth">Minimum exchange amount</label>
                   <div class="input-group mb-3">
                     <input type="text" class="form-control" value="1000" aria-label="Minimum exchange amount of JPYC" aria-describedby="minJPYClabel" id="swapMinJPYC">
@@ -1011,7 +1019,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 
-    <script src="js/index.min.js"></script>
-    <!-- <script src="js/index.js"></script> -->
+    <!-- <script src="js/index.min.js"></script> -->
+    <script src="js/index.js"></script>
   </body>
 </html>
